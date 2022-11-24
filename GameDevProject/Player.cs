@@ -11,23 +11,32 @@ using System.Threading.Tasks;
 
 namespace GameDevProject
 {
-    internal class Player : IGameObject
+    internal class Player : IGameObject, Imoveable
     {
 
         private Texture2D _texture;
-        private Vector2 position;
-        Animation.Animation animation;
-        private Vector2 speed;
+        public Vector2 Position { get; set; }
+        public Vector2 Speed { get; set; }
 
-        private IInputReader inputReader;
-        
-        public Player(Texture2D texture,IInputReader inputReader)
+        public Vector2 Acceleration { get; set; }
+        public KeyboardReader InputReader { get; set; }
+
+        //private Vector2 position;
+        //private Vector2 speed;
+        //public KeyboardReader inputReader;
+
+        private MovementManager movementManager;
+        Animation.Animation animation;
+
+        public Player(Texture2D texture,KeyboardReader inputReader)
         {
             _texture = texture;
-            this.inputReader = inputReader;
-            this.position = new Vector2(10, 10);
-            this.speed = new Vector2(0, 0);
-            
+            this.InputReader = inputReader;
+            this.Position = new Vector2(10, 10);
+            this.Speed = new Vector2(1, 1);
+            this.Acceleration = new Vector2(0.1f, 0.1f);
+            movementManager = new MovementManager();
+                     
             //TODO: Enum van animation lists maken?
             //animationmanager verwijderen?
             animation = new Animation.Animation();
@@ -39,7 +48,7 @@ namespace GameDevProject
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_texture, position,animation.CurrentFrame.SourceRectangle,Color.White);
+            spriteBatch.Draw(_texture, Position,animation.CurrentFrame.SourceRectangle,Color.White);
         }
 
         public void Update(GameTime gameTime)
@@ -50,9 +59,10 @@ namespace GameDevProject
         
         public void move()
         {
-            var direction = inputReader.ReadInput();
-            speed.X = direction.X;
-            position += speed;
+            movementManager.Move(this);
+            //var direction = inputReader.ReadInput();
+            //speed.X = direction.X;
+            //position += speed;
         }
         
     }

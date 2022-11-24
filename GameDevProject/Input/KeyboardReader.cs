@@ -16,11 +16,11 @@ namespace GameDevProject.Input
             var direction = Vector2.Zero;
             if (state.IsKeyDown(Keys.Left))
             {
-                direction.X = -3;
+                direction.X = -1;
             }
             if (state.IsKeyDown(Keys.Right))
             {
-                direction.X = 3;
+                direction.X = 1;
             }
             if (state.IsKeyDown(Keys.None))
             {
